@@ -12,9 +12,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('comment', function (Blueprint $table) {
-            $table->increments('comment_id');
-            $table->foreignId('life_id')->constrained('life');
-            $table->foreignId('user_id')->constrained('user');
+            $table->bigIncrements("comment_id");
+            $table->foreignId('life_id')->unsigned()->constrained('life', 'life_id');
+            $table->foreignId('user_id')->unsigned()->constrained('user', 'user_id');
             $table->string('comment',100);
         });
     }
