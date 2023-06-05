@@ -12,12 +12,12 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('user', function (Blueprint $table) {
-            $table->increments('user_id');
-            $table->foreignId('img_id')->nullable()->constrained('img');
-            $table->string('user_mail',100)->primary();
+            $table->bigIncrements("user_id");
+            $table->foreignId('img_id')->unsigned()->constrained('img', 'img_id');
+            $table->string('user_mail',100);
             $table->string('user_name',50);
             $table->string('password');
-            $table->foreignId('life_id')->nullable()->constrained('life');
+            $table->integer('life_id')->nullable();
             $table->date('birth')->nullable();
             $table->string('blood_type',10)->nullable();
             $table->string('hobby',100)->nullable();

@@ -12,11 +12,11 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('life', function (Blueprint $table) {
-            $table->increments('life_id');
+            $table->bigIncrements("life_id");
             $table->string('life_name',50);
             $table->string('life_detail',100);
             $table->string('message',50);
-            $table->foreignId('user_id')->constrained('user');
+            $table->foreignId('user_id')->unsigned()->constrained('user', 'user_id');
             $table->integer('good');
         });
     }

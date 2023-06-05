@@ -12,9 +12,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('trout', function (Blueprint $table) {
-            $table->increments('trout_id');
+            $table->bigIncrements("trout_id");
             $table->string('trout_detail',100)->nullable();
-            $table->foreignId('life_id')->constrained('life');
+            $table->foreignId('life_id')->unsigned()->constrained('life', 'life_id');
             $table->integer('seqno');
             $table->integer('point')->default(0);
             $table->string('color');
