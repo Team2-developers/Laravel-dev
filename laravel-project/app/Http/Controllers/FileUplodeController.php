@@ -38,7 +38,7 @@ class FileUplodeController extends Controller
         return response()->json([
             'message' => 'File uploaded and record created successfully',
             'img_id' => $img->id,
-            'img_path' => asset(Storage::url(str_replace('public/', '', $img->img_pass)))
+            'img_path' => asset('storage/'.$file_name)
         ], 200);
     }
 
