@@ -84,9 +84,55 @@ class UserController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request)
     {
-        //
+        // リクエストからIDを取得
+        $id = $request->input('id');
+        // 1. ユーザーが存在するか確認
+        $user = User::find($id);
+
+        if (!$user) {
+            return response()->json(['message' => 'User not found'], 404);
+        }
+
+        // 2. バリデーション
+        $request->validate([
+            'img_id' => 'nullable|exists:img,img_id',
+            'user_mail' => 'required|email|max:100',
+            'user_name' => 'required|max:50',
+            'life_id' => 'nullable|integer',
+            'birth' => 'nullable|date',
+            'blood_type' => 'nullable|max:10',
+            'hobby' => 'nullable|max:100',
+            'episode1' => 'nullable|max:100',
+            'episode2' => 'nullable|max:100',
+            'episode3' => 'nullable|max:100',
+            'episode4' => 'nullable|max:100',
+            'episode5' => 'nullable|max:100',
+            'abilities' => 'nullable',
+        ]);
+
+        // 3. ユーザー情報のアップデート
+        $user->fill([
+            'img_id' => $request->img_id,
+            'user_mail' => $request->user_mail,
+            'user_name' => $request->user_name,
+            'life_id' => $request->life_id,
+            'birth' => $request->birth,
+            'blood_type' => $request->blood_type,
+            'hobby' => $request->hobby,
+            'episode1' => $request->episode1,
+            'episode2' => $request->episode2,
+            'episode3' => $request->episode3,
+            'episode4' => $request->episode4,
+            'episode5' => $request->episode5,
+            'abilities' => $request->abilities,
+        ]);
+
+        $user->save();
+
+        // 4. レスポンスの返却
+        return response()->json(['message' => 'User updated successfully', 'user' => $user], 200);
     }
 
     /**
@@ -96,5 +142,4 @@ class UserController extends Controller
     {
         //
     }
-
 }

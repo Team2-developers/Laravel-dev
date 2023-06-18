@@ -24,7 +24,10 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::middleware('auth:api')->get('/user', [UserController::class, 'me']);
 
 //アカウント作成
-Route::post('/user', [UserController::class, 'store']);
+Route::post('/user/create', [UserController::class, 'store']);
+
+//アカウント変更
+Route::post('/user/update', [UserController::class, 'update']);
 
 //画像アップロード
 Route::post('fileupload', [FileUplodeController::class, 'store']);
