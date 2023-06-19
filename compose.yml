@@ -18,8 +18,9 @@ services:
       - app
   db:
     image: mysql:5.7.28
-    container_name: db
+    container_name: app_db
     environment:
+      MYSQL_ROOT_USER: root
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: database
       MYSQL_USER: db-user

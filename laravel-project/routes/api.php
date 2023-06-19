@@ -4,6 +4,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\FileUplodeController;
+use App\Http\Controllers\lifeController;
+use App\Http\Controllers\TroutController;
 
 /*
 |--------------------------------------------------------------------------
@@ -31,3 +33,10 @@ Route::post('/user/update', [UserController::class, 'update']);
 
 //画像アップロード
 Route::post('fileupload', [FileUplodeController::class, 'store']);
+
+
+//人生作成
+Route::post('life/create', [lifeController::class, 'store']);
+
+//マス作成
+Route::post('trout/create', [TroutController::class, 'store']);
