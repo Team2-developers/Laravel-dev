@@ -37,6 +37,13 @@ Route::post('fileupload', [FileUplodeController::class, 'store']);
 
 //人生作成
 Route::post('life/create', [lifeController::class, 'store']);
+//人生取得
+Route::get('/life/{life_id}', [LifeController::class, 'getLifeWithTorut']);
+//ユーザの人生を一覧で取得
+Route::get('/user/{user_id}/lifes', [LifeController::class, 'getUserinfo']);
 
 //マス作成
 Route::post('trout/create', [TroutController::class, 'store']);
+
+//Lifeテーブルのgoodカラムを増やす
+Route::post('/life/{life_id}/good', [LifeController::class, 'incrementGood']);

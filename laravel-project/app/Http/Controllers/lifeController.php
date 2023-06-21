@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Life;
+use App\Models\Trout;
+use App\Models\User;
+
 
 class lifeController extends Controller
 {
@@ -35,7 +38,7 @@ class lifeController extends Controller
             'message' => 'required|max:50',
             'user_id' => 'required|exists:user,user_id',
         ]);
-    
+
         // 2. データの保存
         $life = new Life([
             'life_name' => $request->life_name,
@@ -43,9 +46,9 @@ class lifeController extends Controller
             'message' => $request->message,
             'user_id' => $request->user_id,
         ]);
-    
+
         $life->save();
-    
+
         // 3. レスポンスの返却
         return response()->json(['message' => 'Life created successfully', 'life' => $life], 201);
     }
@@ -81,5 +84,61 @@ class lifeController extends Controller
     {
         //
     }
-    
+
+
+    public function getLifeWithTorut($life_id)
+    {
+        $life = Life::find($life_id);
+
+        if (!$life) {
+            return response()->json(['message' => 'Life not found'], 404);
+        }
+
+        $torutRecords = Trout::where('life_id', $life_id)->take(20)->get();
+
+        return response()->json([
+            'life' => $life,
+            'torut' => $torutRecords,
+        ]);
+    }
+
+
+    public function getUserinfo($user_id)
+    {
+        $user = User::find($user_id);
+        $lifes = Life::where('user_id', $user_id)->get();
+
+        if (!$user || $lifes->isEmpty()) {
+            return response()->json(['message' => 'User or lifes not found for this user'], 404);
+        }
+
+        return response()->json([
+            'user' => $user,
+            'lifes' => $lifes
+        ]);
+    }
+
+
+    public function incrementGood(Request $request, $life_id)
+    {
+        $life = Life::find($life_id);
+
+        if (!$life) {
+            return response()->json(['message' => 'Life not found'], 404);
+        }
+
+        // 増分のバリデーション
+        $request->validate([
+            'increment' => 'required|integer|min:1'
+        ]);
+
+        // 増分を取得して good を増やす
+        $increment = $request->input('increment');
+        $life->increment('good', $increment);
+
+        return response()->json([
+            'message' => 'Good incremented successfully',
+            'life' => $life
+        ]);
+    }
 }
