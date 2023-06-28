@@ -5,3 +5,9 @@
 3:composer install
 
 4:docker-compsoe up -d --build
+
+5:laravel-dev_appにアクセス
+
+6:cd laravel-project
+
+7:php artisan storage:link
