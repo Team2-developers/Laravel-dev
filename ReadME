@@ -1,0 +1,7 @@
+1:git clone
+
+2:.env.exampleをコピーして.envファイルを作成する
+
+3:composer install
+
+4:docker-compsoe up -d --build
