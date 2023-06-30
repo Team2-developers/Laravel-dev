@@ -11,3 +11,15 @@
 6:cd laravel-project
 
 7:php artisan storage:link
+8:php artisan migrate
+
+
+ex:1 ヤバいときのキャッシュクリアコマンド
+php artisan config:clear
+php artisan cache:clear
+
+ex:2 マイグレーションチェック
+php artisan migrate:status
+
+ex:3 マイグレーションロールバック
+php artisan migrate:rollback
