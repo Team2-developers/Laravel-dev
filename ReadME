@@ -10,6 +10,8 @@
 
 6:cd laravel-project
 
+composer require laravel/sanctum
+
 7:php artisan storage:link
 8:php artisan migrate
 
