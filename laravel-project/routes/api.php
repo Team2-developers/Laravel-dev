@@ -6,6 +6,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\FileUplodeController;
 use App\Http\Controllers\lifeController;
 use App\Http\Controllers\TroutController;
+use App\Http\Controllers\AuthController;
 
 /*
 |--------------------------------------------------------------------------
@@ -47,3 +48,11 @@ Route::post('trout/create', [TroutController::class, 'store']);
 
 //Lifeテーブルのgoodカラムを増やす
 Route::post('/life/{life_id}/good', [LifeController::class, 'incrementGood']);
+
+
+//認証系
+Route::post('/login', [AuthController::class, 'login']);
+
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/user', [AuthController::class, 'user']);
+});
