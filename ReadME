@@ -2,9 +2,17 @@
 
 2:.env.exampleをコピーして.envファイルを作成する
 
-3:composer install
+コンポーザーをインストールする
+brew install composer(mac)
 
-4:docker-compsoe up -d --build
+3:composer install(LARAVEL-DEVの階層で実行)
+composer update 
+
+
+4:docker-compose up -d --build
+m1チップの場合はymlファイルを変更
+ db:
+    platform: linux/x86_64 // この行を追加。
 
 5:laravel-dev_appにアクセス
 
