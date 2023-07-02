@@ -10,7 +10,8 @@
 
 6:cd laravel-project
 
-composer require laravel/sanctum
+composer require laravel/sanctum 画像出力のためのインストール
+composer require simplesoftwareio/simple-qrcode QRコード作成のためのインストール
 
 7:php artisan storage:link
 8:php artisan migrate
@@ -25,3 +26,7 @@ php artisan migrate:status
 
 ex:3 マイグレーションロールバック
 php artisan migrate:rollback
+
+ex4 composer require simplesoftwareio/simple-qrcodeが上手くいかない場合
+php --ini php.iniのファイルの場所を特定
+extension=gdの；を削除
