@@ -7,6 +7,7 @@ use App\Http\Controllers\FileUplodeController;
 use App\Http\Controllers\lifeController;
 use App\Http\Controllers\TroutController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\QRCodeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -51,6 +52,10 @@ if (env('APP_AUTH_CHECK', true)) {
         //Lifeテーブルのgoodカラムを増やす
         Route::post('/life/{life_id}/good', [LifeController::class, 'incrementGood']);
 
+        //ゲームテーブル系作成
+        Route::post('/games', [QRCodeController::class, 'store']);
+        Route::get('/games/{game}', [QRCodeController::class, 'show'])->name('games.show');
+
         //ユーザ情報取得
         Route::get('/user', [AuthController::class, 'user']);
     });
@@ -67,6 +72,10 @@ if (env('APP_AUTH_CHECK', true)) {
 
     //Lifeテーブルのgoodカラムを増やす
     Route::post('/life/{life_id}/good', [LifeController::class, 'incrementGood']);
+
+    //ゲームテーブル系作成
+    Route::post('/games', [QRCodeController::class, 'store']);
+    Route::get('/games/{game}', [QRCodeController::class, 'show'])->name('games.show');
 }
 
 //認証系
