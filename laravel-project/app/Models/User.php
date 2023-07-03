@@ -37,11 +37,9 @@ class User extends Authenticatable
         'episode3',
         'episode4',
         'episode5',
-        'token',
         'expires_at',
         'remember_token',
         'abilities',
-        'last_used_at',
     ];
 
     /**
@@ -62,7 +60,6 @@ class User extends Authenticatable
     protected $casts = [
         'birth' => 'datetime',
         'expires_at' => 'datetime',
-        'last_used_at' => 'datetime',
         'password' => 'hashed',
     ];
 

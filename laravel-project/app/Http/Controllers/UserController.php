@@ -62,9 +62,7 @@ class UserController extends Controller
             'episode3' => $request->episode3,
             'episode4' => $request->episode4,
             'episode5' => $request->episode5,
-            'token' => Str::random(64),
             'abilities' => null, // トークンがまだ使用されていないので、nullを設定する
-            'last_used_at' => null, // トークンがまだ使用されていないので、nullを設定する
         ]);
 
         $user->save();

@@ -26,8 +26,6 @@ return new class extends Migration
             $table->string('episode3',100)->nullable();
             $table->string('episode4',100)->nullable();
             $table->string('episode5',100)->nullable();
-            $table->string('token', 64)->unique();
-            $table->timestamp('expires_at')->nullable();
             $table->rememberToken();
             $table->text('abilities')->nullable();
             $table->timestamp('last_used_at')->nullable();
