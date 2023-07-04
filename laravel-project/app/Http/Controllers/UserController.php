@@ -38,6 +38,7 @@ class UserController extends Controller
             'life_id' => 'nullable|integer',
             'birth' => 'nullable|date',
             'blood_type' => 'nullable|max:10',
+            'height'=> 'nullable|integer',
             'hobby' => 'nullable|max:100',
             'episode1' => 'nullable|max:100',
             'episode2' => 'nullable|max:100',
@@ -56,6 +57,7 @@ class UserController extends Controller
             'life_id' => $request->life_id,
             'birth' => $request->birth,
             'blood_type' => $request->blood_type,
+            'height' => $request->height,
             'hobby' => $request->hobby,
             'episode1' => $request->episode1,
             'episode2' => $request->episode2,
@@ -91,7 +93,7 @@ class UserController extends Controller
     public function update(Request $request)
     {
         // リクエストからIDを取得
-        $id = $request->input('id');
+        $id = $request->input('user_id');
         // 1. ユーザーが存在するか確認
         $user = User::find($id);
 
@@ -107,6 +109,7 @@ class UserController extends Controller
             'life_id' => 'nullable|integer',
             'birth' => 'nullable|date',
             'blood_type' => 'nullable|max:10',
+            'height'=> 'nullable|integer',
             'hobby' => 'nullable|max:100',
             'episode1' => 'nullable|max:100',
             'episode2' => 'nullable|max:100',
@@ -124,6 +127,7 @@ class UserController extends Controller
             'life_id' => $request->life_id,
             'birth' => $request->birth,
             'blood_type' => $request->blood_type,
+            'height' => $request->height,
             'hobby' => $request->hobby,
             'episode1' => $request->episode1,
             'episode2' => $request->episode2,

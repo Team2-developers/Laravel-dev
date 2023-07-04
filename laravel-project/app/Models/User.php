@@ -32,6 +32,7 @@ class User extends Authenticatable
         'life_id',
         'birth',
         'blood_type',
+        'height',
         'hobby',
         'episode1',
         'episode2',

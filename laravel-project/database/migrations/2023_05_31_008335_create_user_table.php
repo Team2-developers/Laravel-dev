@@ -20,6 +20,7 @@ return new class extends Migration
             $table->integer('life_id')->nullable();
             $table->date('birth')->nullable();
             $table->string('blood_type',10)->nullable();
+            $table->integer('height')->nullable();
             $table->string('hobby',100)->nullable();
             $table->string('episode1',100)->nullable();
             $table->string('episode2',100)->nullable();
