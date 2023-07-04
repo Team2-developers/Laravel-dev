@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\Img;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
@@ -38,7 +39,7 @@ class UserController extends Controller
             'life_id' => 'nullable|integer',
             'birth' => 'nullable|date',
             'blood_type' => 'nullable|max:10',
-            'height'=> 'nullable|integer',
+            'height' => 'nullable|integer',
             'hobby' => 'nullable|max:100',
             'episode1' => 'nullable|max:100',
             'episode2' => 'nullable|max:100',
@@ -69,8 +70,22 @@ class UserController extends Controller
 
         $user->save();
 
+        // img_idに対応するimg_passを取得
+        $img_path = null;
+        if ($request->img_id) {
+            $img = Img::find($request->img_id);
+            if ($img) {
+                // img_passはファイルのパスなので、それをasset関数に渡してURLを生成します
+                $img_path = asset('storage/' . $img->img_pass);
+            }
+        }
+
         // 3. レスポンスの返却
-        return response()->json(['message' => 'User created successfully', 'user' => $user], 201);
+        return response()->json([
+            'message' => 'User created successfully',
+            'user' => $user,
+            'img_path' => $img_path
+        ], 201);
     }
 
     /**
@@ -83,8 +98,17 @@ class UserController extends Controller
         if (!$user) {
             return response()->json(['message' => 'User not found'], 404);
         }
+        // img_idに対応するimg_passを取得
+        $img_path = null;
+        if ($user->img_id) {
+            $img = Img::find($user->img_id);
+            if ($img) {
+                // img_passはファイルのパスなので、それをasset関数に渡してURLを生成します
+                $img_path = asset('storage/' . $img->img_pass);
+            }
+        }
 
-        return response()->json(['user' => $user]);
+        return response()->json(['user' => $user, 'img_path' => $img_path]);
     }
 
     /**
@@ -109,7 +133,7 @@ class UserController extends Controller
             'life_id' => 'nullable|integer',
             'birth' => 'nullable|date',
             'blood_type' => 'nullable|max:10',
-            'height'=> 'nullable|integer',
+            'height' => 'nullable|integer',
             'hobby' => 'nullable|max:100',
             'episode1' => 'nullable|max:100',
             'episode2' => 'nullable|max:100',
@@ -139,8 +163,22 @@ class UserController extends Controller
 
         $user->save();
 
+        // img_idに対応するimg_passを取得
+        $img_path = null;
+        if ($request->img_id) {
+            $img = Img::find($request->img_id);
+            if ($img) {
+                // img_passはファイルのパスなので、それをasset関数に渡してURLを生成します
+                $img_path = asset('storage/' . $img->img_pass);
+            }
+        }
+
         // 4. レスポンスの返却
-        return response()->json(['message' => 'User updated successfully', 'user' => $user], 200);
+        return response()->json([
+            'message' => 'User created successfully',
+            'user' => $user,
+            'img_path' => $img_path
+        ], 201);
     }
 
     /**

@@ -14,4 +14,5 @@ class Img extends Model
     ];
 
     protected $table = 'img';
+    protected $primaryKey = 'img_id';
 }

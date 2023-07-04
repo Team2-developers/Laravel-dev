@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
+use App\Models\Img;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Facades\Hash;
 
@@ -28,7 +29,7 @@ class AuthController extends Controller
         $user = User::where('user_mail', $request->user_mail)->first();
 
         // If the user is not found or the password is incorrect, throw a validation exception.
-        if (! $user || ! Hash::check($request->password, $user->password)) {
+        if (!$user || !Hash::check($request->password, $user->password)) {
             return response()->json([
                 'message' => 'The provided credentials are incorrect.'
             ], 401);
@@ -37,8 +38,18 @@ class AuthController extends Controller
         // Create a new token for the user.
         $token = $user->createToken('my-app-token')->plainTextToken;
 
+        // img_idに対応するimg_passを取得
+        $img_path = null;
+        if ($user->img_id) {
+            $img = Img::find($user->img_id);
+            if ($img) {
+                // img_passはファイルのパスなので、それをasset関数に渡してURLを生成します
+                $img_path = asset('storage/' . $img->img_pass);
+            }
+        }
+
         // Return the user and token as JSON.
-        return response()->json(['user' => $user, 'token' => $token], 200);
+        return response()->json(['user' => $user, 'token' => $token, 'img_path' => $img_path], 200);
     }
 
     /**
@@ -49,7 +60,19 @@ class AuthController extends Controller
      */
     public function user(Request $request)
     {
-        // Return the authenticated user as JSON.
-        return response()->json($request->user());
+        $user = $request->user();
+
+        // img_idに対応するimg_passを取得
+        $img_path = null;
+        if ($user->img_id) {
+            $img = Img::find($user->img_id);
+            if ($img) {
+                // img_passはファイルのパスなので、それをasset関数に渡してURLを生成します
+                $img_path = asset('storage/' . $img->img_pass);
+            }
+        }
+
+        // ユーザー情報と画像ファイルのURLを含むレスポンスを返します
+        return response()->json(['user' => $user, 'img_path' => $img_path]);
     }
 }
