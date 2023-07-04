@@ -28,7 +28,7 @@ class FileUplodeController extends Controller
         }
 
         $file_name = $request->file('file')->getClientOriginalName();
-        $file_path = $request->file('file')->storeAs('public', $file_name);
+        $file_path = $request->file('file')->storeAs($file_name);
 
         // Create a new record in the Img table
         $img = new Img;
@@ -37,7 +37,7 @@ class FileUplodeController extends Controller
 
         return response()->json([
             'message' => 'File uploaded and record created successfully',
-            'img_id' => $img->id,
+            'img_id' => $img->img_id,
             'img_path' => asset('storage/'.$file_name)
         ], 200);
     }
