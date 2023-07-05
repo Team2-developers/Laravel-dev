@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('user', function (Blueprint $table) {
             $table->bigIncrements("user_id");
             $table->foreignId('img_id')->unsigned()->constrained('img', 'img_id');
-            $table->string('user_mail',100);
+            $table->string('user_mail',100)->unique();
             $table->string('user_name',50);
             $table->string('password');
             $table->integer('life_id')->nullable();
