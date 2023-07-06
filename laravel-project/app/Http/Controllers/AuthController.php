@@ -85,7 +85,8 @@ class AuthController extends Controller
     {
         return response()->json([
             'error' => 'エラー',
-            'message' => 'リクエストの処理中にエラーが発生しました。後ほど再度お試しください。'
+            'message' => 'リクエストの処理中にエラーが発生しました。後ほど再度お試しください。',
+            'sys_error' => $e
         ]);
     }
 }

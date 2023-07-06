@@ -115,13 +115,15 @@ class UserController extends Controller
         if ($e->getCode() == 23000) {
             return response()->json([
                 'error' => '入力項目の重複',
-                'message' => '入力したメールアドレスは既に使用されています。'
+                'message' => '入力したメールアドレスは既に使用されています。',
+                'sys_error' => $e
             ], 409);
         }
 
         return response()->json([
             'error' => 'データベースエラー',
-            'message' => 'リクエストの処理中にエラーが発生しました。後ほど再度お試しください。'
+            'message' => 'リクエストの処理中にエラーが発生しました。後ほど再度お試しください。',
+            'sys_error' => $e
         ], 500);
     }
 }
