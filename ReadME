@@ -1,6 +1,6 @@
 0:Laravelの準備
 
-1:git clone
+1:git clone git@github.com:Team2-developers/Laravel-dev.git
 
 2:.env.exampleをコピーして.envファイルを作成する
 
