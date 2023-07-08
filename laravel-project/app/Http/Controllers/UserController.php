@@ -12,7 +12,7 @@ use Illuminate\Database\QueryException;
 class UserController extends Controller
 {
 
-    private function createUser(Request $request): User
+    private function createUser(Request $request)
     {
         $user = new User($request->validated());
 
@@ -21,7 +21,9 @@ class UserController extends Controller
 
         $user->save();
 
-        return $user;
+        $token = $user->createToken('my-app-token')->plainTextToken;
+
+        return ['user' => $user, 'token' => $token];
     }
 
     private function getImagePathFromImgId($img_id)

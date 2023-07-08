@@ -39,10 +39,4 @@ class StoreUserRequest extends FormRequest
             'abilities' => 'nullable',
         ];
     }
-
-    public function messages(){
-        return[
-            'user_mail.unique' => 'このメールアドレスは既に使用されています。',
-        ];
-    }
 }
