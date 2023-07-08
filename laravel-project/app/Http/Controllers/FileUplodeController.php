@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\URL;
 use App\Models\Img;
+use Illuminate\Support\Str;
+
 
 
 class FileUplodeController extends Controller
@@ -28,7 +30,8 @@ class FileUplodeController extends Controller
         }
 
         $file_name = $request->file('file')->getClientOriginalName();
-        $file_path = $request->file('file')->storeAs($file_name);
+        $file_path = $request->file('file')->storeAs('public', $file_name);
+        $file_path = Str::after($file_path, 'public/');
 
         // Create a new record in the Img table
         $img = new Img;
@@ -38,7 +41,7 @@ class FileUplodeController extends Controller
         return response()->json([
             'message' => 'File uploaded and record created successfully',
             'img_id' => $img->img_id,
-            'img_path' => asset('storage/'.$file_name)
+            'img_path' => asset('storage/'.$file_path)
         ], 200);
     }
 
