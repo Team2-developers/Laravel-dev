@@ -31,7 +31,7 @@ Route::middleware('auth:api')->get('/user', [UserController::class, 'me']);
 Route::post('/user/create', [UserController::class, 'store']);
 
 //アカウント変更
-Route::post('/user/update', [UserController::class, 'update']);
+Route::post('/user/update/{id}', [UserController::class, 'update']);
 
 //画像アップロード
 Route::post('fileupload', [FileUplodeController::class, 'store']);
