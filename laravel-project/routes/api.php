@@ -8,6 +8,7 @@ use App\Http\Controllers\lifeController;
 use App\Http\Controllers\TroutController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\QRCodeController;
+use App\Http\Controllers\GameController;
 
 /*
 |--------------------------------------------------------------------------
@@ -55,6 +56,8 @@ if (env('APP_AUTH_CHECK', true)) {
         //ゲームテーブル系作成
         Route::post('/games', [QRCodeController::class, 'store']);
         Route::get('/games/{game}', [QRCodeController::class, 'show'])->name('games.show');
+        //ゲームテーブル最新情報を取得
+        Route::get('/game/{id}', [GameController::class, 'show']);
 
         //ユーザ情報取得
         Route::get('/user', [AuthController::class, 'user']);
