@@ -25,7 +25,7 @@ class Game extends Model
      */
     protected $primaryKey = 'game_id';
 
-    
+
     public $timestamps = false;
 
     /**
@@ -34,4 +34,25 @@ class Game extends Model
      * @var string
      */
     protected $table = 'game';
+
+    // 以下を追加
+    public function user1()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
+
+    public function user2()
+    {
+        return $this->belongsTo(User::class, 'user_2');
+    }
+
+    public function user3()
+    {
+        return $this->belongsTo(User::class, 'user_3');
+    }
+
+    public function user4()
+    {
+        return $this->belongsTo(User::class, 'user_4');
+    }
 }

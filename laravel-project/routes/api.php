@@ -58,6 +58,8 @@ if (env('APP_AUTH_CHECK', true)) {
         Route::get('/games/{game}', [QRCodeController::class, 'show'])->name('games.show');
         //ゲームテーブル最新情報を取得
         Route::get('/game/{id}', [GameController::class, 'show']);
+        //ゲーム参加処理
+        Route::middleware('auth:sanctum')->post('/game/join/{id}', [GameController::class, 'joinGame']);
 
         //ユーザ情報取得
         Route::get('/user', [AuthController::class, 'user']);
