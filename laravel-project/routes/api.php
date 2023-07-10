@@ -9,6 +9,7 @@ use App\Http\Controllers\TroutController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\QRCodeController;
 use App\Http\Controllers\GameController;
+use App\Http\Controllers\CommentController;
 
 /*
 |--------------------------------------------------------------------------
@@ -61,6 +62,10 @@ if (env('APP_AUTH_CHECK', true)) {
         //ゲーム参加処理
         Route::middleware('auth:sanctum')->post('/game/join/{id}', [GameController::class, 'joinGame']);
 
+        //コメント作成
+        Route::post('/comments/create', [CommentController::class, 'store']);
+
+
         //ユーザ情報取得
         Route::get('/user', [AuthController::class, 'user']);
     });
@@ -81,6 +86,9 @@ if (env('APP_AUTH_CHECK', true)) {
     //ゲームテーブル系作成
     Route::post('/games', [QRCodeController::class, 'store']);
     Route::get('/games/{game}', [QRCodeController::class, 'show'])->name('games.show');
+
+    //コメント
+    Route::apiResource('comments', CommentController::class);
 }
 
 //認証系
