@@ -21,8 +21,7 @@ class UserController extends Controller
 
         $user->save();
 
-        $user->token = $user->createToken('my-app-token')->plainTextToken;
-
+        // $user->token = $user->createToken('my-app-token')->plainTextToken;
         return $user;
     }
 

@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Game;
+use App\Models\User;
+use App\Models\Img;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use Illuminate\Http\Request;
 
@@ -10,28 +12,54 @@ class QRCodeController extends Controller
 {
     public function store(Request $request)
     {
-        // Validate the request...
+        $game = $this->createGameFromRequest($request);
 
-        $validatedData = $request->validate([
-            'user_id' => 'required|integer',
-        ]);
-
-        $gameData = $request->all();
-        $gameData['game_status'] = 'notstarted';
-        $game = Game::create($gameData);
+        $user = User::find($game->user_id);
+        $img_path = $this->getImagePath($user);
 
         $qrData = [
             'game_id' => $game->game_id,
             'game_status' => $game->game_status,
-            'user_id' => $game->user_id
+            'user_name' => $user->user_name,
+            'user_mail' => $user->user_mail,
+            'img_path' => $img_path
         ];
 
+        $svgWithoutDeclaration = $this->generateQrCode($qrData);
+
+        return response($svgWithoutDeclaration)->header('Content-Type', 'image/svg+xml');
+    }
+
+    private function createGameFromRequest(Request $request): Game
+    {
+        $gameData = $request->all();
+        $gameData['game_status'] = 'notstarted'; // explicitly setting the value
+        return Game::create($gameData);
+    }
+
+    private function getImagePath(?User $user): ?string
+    {
+        if ($user && $user->img_id) {
+            $img = Img::find($user->img_id);
+            if ($img) {
+                return asset('storage/' . $img->img_pass);
+            }
+        }
+        return null;
+    }
+
+    private function generateQrCode(array $qrData): string
+    {
         $queryParams = http_build_query($qrData);
 
-        // Generate QR Code
-        return QrCode::size(300)->generate('http://localhost:8080/roomCreationComplete?' . $queryParams);
-        // return QrCode::size(300)->generate(route('games.show', $game));
+        $svg = QrCode::format('svg')->size(300)->generate('http://localhost:8080/RoomJoin?' . $queryParams);
+
+        // Remove XML Declaration
+        $dom = new \DOMDocument;
+        $dom->loadXML($svg);
+        return $dom->saveXML($dom->documentElement);
     }
+
 
 
     public function show(Game $game)
