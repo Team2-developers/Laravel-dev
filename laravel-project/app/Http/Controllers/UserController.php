@@ -21,9 +21,9 @@ class UserController extends Controller
 
         $user->save();
 
-        $token = $user->createToken('my-app-token')->plainTextToken;
+        // $user->token = $user->createToken('my-app-token')->plainTextToken;
 
-        return ['user' => $user, 'token' => $token];
+        return $user;
     }
 
     private function getImagePathFromImgId($img_id)
