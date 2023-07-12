@@ -6,25 +6,11 @@ use Illuminate\Http\Request;
 use App\Models\Life;
 use App\Models\Trout;
 use App\Models\User;
+use Illuminate\Support\Facades\DB;
 
 
 class lifeController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
 
     /**
      * Store a newly created resource in storage.
@@ -53,38 +39,6 @@ class lifeController extends Controller
         return response()->json(['message' => 'Life created successfully', 'life' => $life], 201);
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
-    }
-
 
     public function getLifeWithTorut($life_id)
     {
@@ -99,6 +53,34 @@ class lifeController extends Controller
         return response()->json([
             'life' => $life,
             'torut' => $torutRecords,
+        ]);
+    }
+
+
+    public function updateLifeAndTrout(Request $request)
+    {
+        DB::transaction(function () use ($request) {
+            // lifeテーブルの更新
+            $life = Life::find($request->life_id);
+            $life->updateLife($request->all());
+
+            //seqnoに対応するカラム値を更新
+            foreach ($request->trouts as $troutData) {
+                $trout = Trout::where('life_id', $request->life_id)
+                    ->where('seqno', $troutData['seqno'])
+                    ->first();
+
+                // Add null check here
+                if ($trout !== null) {
+                    $trout->updateTrout($troutData);
+                }
+            }
+        });
+
+        return response()->json([
+            'message' => 'update successfully',
+            'life' => Life::find($request->life_id),
+            'trouts' => Trout::where('life_id', $request->life_id)->get()
         ]);
     }
 

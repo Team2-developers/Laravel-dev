@@ -51,4 +51,13 @@ class Life extends Model
     {
         return $this->hasMany(Trout::class, 'life_id', 'life_id');
     }
+
+    public function updateLife($data)
+    {
+        $this->life_name = $data['life_name'];
+        $this->life_detail = $data['life_detail'];
+        $this->message = $data['message'];
+        $this->user_id = $data['user_id'];
+        $this->save();
+    }
 }

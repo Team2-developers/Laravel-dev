@@ -45,4 +45,14 @@ class Trout extends Model
     {
         return $this->belongsTo(Life::class, 'life_id', 'life_id');
     }
+
+    public function updateTrout($data)
+    {
+        if ($this) {
+            $this->trout_detail = $data['trout_detail'];
+            $this->point = $data['point'];
+            $this->color = $data['color'];
+            $this->save();
+        }
+    }
 }

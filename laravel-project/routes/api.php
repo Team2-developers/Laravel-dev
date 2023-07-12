@@ -47,6 +47,8 @@ if (env('APP_AUTH_CHECK', true)) {
         Route::get('/life/{life_id}', [LifeController::class, 'getLifeWithTorut']);
         //ユーザの人生を一覧で取得
         Route::get('/user/{user_id}/lifes', [LifeController::class, 'getUserinfo']);
+        //人生修正、変更
+        Route::post('/updateLifeAndTrout', [LifeController::class, 'updateLifeAndTrout']);
 
         //マス作成
         Route::post('trout/create', [TroutController::class, 'store']);
