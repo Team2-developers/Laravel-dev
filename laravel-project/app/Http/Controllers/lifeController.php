@@ -56,6 +56,55 @@ class lifeController extends Controller
         ]);
     }
 
+    public function storeLifeAndTrout(Request $request)
+    {
+        $request->validate([
+            'life' => ['required', 'array'],
+            'life.life_name' => ['required', 'max:50'],
+            'life.life_detail' => ['required', 'max:100'],
+            'life.message' => ['required', 'max:50'],
+            'life.user_id' => ['required', 'exists:user,user_id'], // ユーザーテーブルの名前とIDのカラム名を確認
+            'trouts' => ['required', 'array'],
+            'trouts.*.trout_detail' => ['required', 'max:100'],
+            'trouts.*.seqno' => ['required', 'integer'],
+            'trouts.*.point' => ['nullable', 'integer'],
+            'trouts.*.color' => ['required', 'max:50'],
+        ]);
+
+        $life = null;
+        DB::transaction(function () use ($request, &$life) {
+            $life = new Life([
+                'life_name' => $request->life['life_name'],
+                'life_detail' => $request->life['life_detail'],
+                'message' => $request->life['message'],
+                'user_id' => $request->life['user_id'],
+                'good' => 0, // 初期値として0を設定
+            ]);
+
+            $life->save();
+
+            foreach ($request->trouts as $troutData) {
+                $trout = new Trout($troutData + ['life_id' => $life->life_id]);
+
+                $trout->save();
+            }
+        });
+
+        if ($life) {
+            return response()->json([
+                'message' => 'Life and trouts created successfully',
+                'life' => $life,
+                'trouts' => Trout::where('life_id', $life->life_id)->get()
+            ]);
+        } else {
+            return response()->json([
+                'message' => 'An error occurred while creating life and trouts'
+            ], 500);
+        }
+    }
+
+
+
 
     public function updateLifeAndTrout(Request $request)
     {
