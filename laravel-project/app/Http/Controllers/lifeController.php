@@ -65,7 +65,7 @@ class lifeController extends Controller
             'life.message' => ['required', 'max:50'],
             'life.user_id' => ['required', 'exists:user,user_id'], // ユーザーテーブルの名前とIDのカラム名を確認
             'trouts' => ['required', 'array'],
-            'trouts.*.trout_detail' => ['required', 'max:100'],
+            'trouts.*.trout_detail' => ['nullable', 'max:100'],
             'trouts.*.seqno' => ['required', 'integer'],
             'trouts.*.point' => ['nullable', 'integer'],
             'trouts.*.color' => ['required', 'max:50'],
