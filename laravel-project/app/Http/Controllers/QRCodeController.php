@@ -27,7 +27,14 @@ class QRCodeController extends Controller
 
         $svgWithoutDeclaration = $this->generateQrCode($qrData);
 
-        return response($svgWithoutDeclaration)->header('Content-Type', 'image/svg+xml');
+        // Create an array that includes both the SVG and the game_id
+        $response = [
+            'svg' => $svgWithoutDeclaration,
+            'game_id' => $game->game_id,
+        ];
+
+        // Return the response as a JSON
+        return response()->json($response);
     }
 
     private function createGameFromRequest(Request $request): Game
