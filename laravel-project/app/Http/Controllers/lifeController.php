@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Life;
 use App\Models\Trout;
 use App\Models\User;
+use App\Models\Img;
 use Illuminate\Support\Facades\DB;
 
 
@@ -49,10 +50,12 @@ class lifeController extends Controller
         }
 
         $torutRecords = Trout::where('life_id', $life_id)->take(20)->get();
+        $img_path = $this->getImagePathFromImgId($life->img_id);
 
         return response()->json([
             'life' => $life,
             'torut' => $torutRecords,
+            'img_path' => $img_path
         ]);
     }
 
@@ -63,7 +66,8 @@ class lifeController extends Controller
             'life.life_name' => ['required', 'max:50'],
             'life.life_detail' => ['required', 'max:100'],
             'life.message' => ['required', 'max:50'],
-            'life.user_id' => ['required', 'exists:user,user_id'], // ユーザーテーブルの名前とIDのカラム名を確認
+            'life.user_id' => ['required', 'exists:user,user_id'],
+            'life.img_id' => ['nullable', 'exists:img,img_id'],
             'trouts' => ['required', 'array'],
             'trouts.*.trout_detail' => ['nullable', 'max:100'],
             'trouts.*.seqno' => ['required', 'integer'],
@@ -80,6 +84,9 @@ class lifeController extends Controller
                 'user_id' => $request->life['user_id'],
                 'good' => 0, // 初期値として0を設定
             ]);
+            if (isset($request->life['img_id']) && !is_null($request->life['img_id'])) {
+                $life->img_id = $request->life['img_id'];
+            }
 
             $life->save();
 
@@ -171,5 +178,17 @@ class lifeController extends Controller
             'message' => 'Good incremented successfully',
             'life' => $life
         ]);
+    }
+
+    private function getImagePathFromImgId($img_id)
+    {
+        $img_path = null;
+        if ($img_id) {
+            $img = Img::find($img_id);
+            if ($img) {
+                $img_path = asset('storage/' . $img->img_pass);
+            }
+        }
+        return $img_path;
     }
 }

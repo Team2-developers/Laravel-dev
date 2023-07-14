@@ -58,6 +58,7 @@ class Life extends Model
         $this->life_detail = $data['life_detail'];
         $this->message = $data['message'];
         $this->user_id = $data['user_id'];
+        $this->img_id = $data['img_id'];
         $this->save();
     }
 }
