@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('life_detail',100);
             $table->string('message',50);
             $table->foreignId('user_id')->unsigned()->constrained('user', 'user_id');
+            $table->foreignId('img_id')->unsigned()->nullable()->constrained('img', 'img_id');
             $table->integer('good')->default(0);
         });
     }
