@@ -62,12 +62,11 @@ class lifeController extends Controller
     public function storeLifeAndTrout(Request $request)
     {
         $request->validate([
-            'life' => ['required', 'array'],
-            'life.life_name' => ['required', 'max:50'],
-            'life.life_detail' => ['required', 'max:100'],
-            'life.message' => ['required', 'max:50'],
-            'life.user_id' => ['required', 'exists:user,user_id'],
-            'life.img_id' => ['nullable', 'exists:img,img_id'],
+            'life_name' => ['required', 'max:50'],
+            'life_detail' => ['required', 'max:100'],
+            'message' => ['required', 'max:50'],
+            'user_id' => ['required', 'exists:user,user_id'],
+            'img_id' => ['nullable', 'exists:img,img_id'],
             'trouts' => ['required', 'array'],
             'trouts.*.trout_detail' => ['nullable', 'max:100'],
             'trouts.*.seqno' => ['required', 'integer'],
@@ -76,16 +75,17 @@ class lifeController extends Controller
         ]);
 
         $life = null;
+
         DB::transaction(function () use ($request, &$life) {
             $life = new Life([
-                'life_name' => $request->life['life_name'],
-                'life_detail' => $request->life['life_detail'],
-                'message' => $request->life['message'],
-                'user_id' => $request->life['user_id'],
+                'life_name' => $request->life_name,
+                'life_detail' => $request->life_detail,
+                'message' => $request->message,
+                'user_id' => $request->user_id,
                 'good' => 0, // 初期値として0を設定
             ]);
-            if (isset($request->life['img_id']) && !is_null($request->life['img_id'])) {
-                $life->img_id = $request->life['img_id'];
+            if (isset($request->img_id) && !is_null($request->img_id)) {
+                $life->img_id = $request->img_id;
             }
 
             $life->save();
@@ -109,6 +109,7 @@ class lifeController extends Controller
             ], 500);
         }
     }
+
 
 
 
