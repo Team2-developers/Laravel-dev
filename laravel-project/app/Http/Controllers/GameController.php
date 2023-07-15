@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Game;
 use App\Models\Img;
+use App\Models\User;
+use App\Models\Life;
+use App\Models\Trout;
 use Exception;
 
 class GameController extends Controller
@@ -72,5 +75,48 @@ class GameController extends Controller
             }
         }
         return $img_path;
+    }
+
+    public function start(Request $request, $id)
+    {
+        // Find the game
+        $game = Game::findOrFail($id);
+
+        // Check if the game can be started
+        if (strcasecmp(trim($game->game_status), 'notstarted') != 0) {
+            return response()->json(['message' => 'Game already started'], 400);
+        }
+
+        // Start the game
+        $game->game_status = 'started';
+        $game->save();
+
+        // Get the user ids
+        $userIds = [$game->user_id, $game->user_2, $game->user_3, $game->user_4];
+
+        // Find users for each user id, and use null if user not found
+        $users = collect($userIds)->map(function ($userId) {
+            $user = null;
+            if ($userId) {
+                $user = User::find($userId);
+                if ($user) {
+                    $user->img_path = $this->getImagePathFromImgId($user->img_id);
+                }
+            }
+            return $user;
+        });
+
+        $lifeIds = $users->pluck('life_id')->filter()->values();
+        $firstLifeId = $lifeIds->first();
+        $life = Life::find($firstLifeId);
+
+        $torutRecords = Trout::where('life_id', $life->life_id)->take(20)->get();
+
+        return response()->json([
+            'message' => 'Game started',
+            'life' => $life,
+            'torut' => $torutRecords,
+            'users' => $users
+        ]);
     }
 }
