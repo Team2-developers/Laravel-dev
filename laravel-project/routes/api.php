@@ -10,6 +10,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\QRCodeController;
 use App\Http\Controllers\GameController;
 use App\Http\Controllers\CommentController;
+use App\Http\Controllers\NotificationController;
 
 /*
 |--------------------------------------------------------------------------
@@ -73,6 +74,9 @@ if (env('APP_AUTH_CHECK', true)) {
 
         //コメント作成
         Route::post('/comments/create', [CommentController::class, 'store']);
+
+        //通知取得
+        Route::get('/notifications', [NotificationController::class, 'showNotifications']);
 
 
         //ユーザ情報取得

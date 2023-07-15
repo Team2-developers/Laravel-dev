@@ -14,13 +14,9 @@ class Comment extends Model
 
     public function life()
     {
-        return $this->belongsTo('App\Life');
+        return $this->belongsTo(Life::class, 'life_id', 'life_id');
     }
 
-    public function user()
-    {
-        return $this->belongsTo('App\User');
-    }
 
     /**
      * The primary key associated with the table.

@@ -52,6 +52,11 @@ class Life extends Model
         return $this->hasMany(Trout::class, 'life_id', 'life_id');
     }
 
+    public function comments()
+    {
+        return $this->hasMany(Comment::class, 'life_id', 'life_id');
+    }
+
     public function updateLife($data)
     {
         $this->life_name = $data['life_name'];
