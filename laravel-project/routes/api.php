@@ -65,6 +65,8 @@ if (env('APP_AUTH_CHECK', true)) {
         Route::get('/game/{id}', [GameController::class, 'show']);
         //ゲーム参加処理
         Route::middleware('auth:sanctum')->post('/game/join/{id}', [GameController::class, 'joinGame']);
+        //ゲームスタート
+        Route::get('/game/{id}/start', [GameController::class, 'start']);
 
         //コメント作成
         Route::post('/comments/create', [CommentController::class, 'store']);
