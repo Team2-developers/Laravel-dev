@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Requests\StoreUserRequest;
 use Illuminate\Database\QueryException;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
@@ -80,17 +81,15 @@ class UserController extends Controller
         }
     }
 
-    public function update(StoreUserRequest $request, string $id)
+    public function update(StoreUserRequest $request)
     {
         try {
-            $user = User::find($id);
+            $user = Auth::user();
 
             if (!$user) {
                 return response()->json(['message' => 'User not found'], 404);
             }
-
             $user->fill($request->validated());
-
             $user->save();
 
             $img_path = $this->getImagePathFromImgId($request->img_id);
