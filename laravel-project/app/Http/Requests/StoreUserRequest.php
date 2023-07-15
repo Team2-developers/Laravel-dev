@@ -25,7 +25,7 @@ class StoreUserRequest extends FormRequest
             'img_id' => 'nullable|exists:img,img_id',
             'user_mail' => 'required|email|max:100',
             'user_name' => 'required|max:50',
-            'password' => 'required|min:6',
+            'password' => 'sometimes|min:6',
             'life_id' => 'nullable|integer',
             'birth' => 'nullable|date',
             'blood_type' => 'nullable|max:10',
