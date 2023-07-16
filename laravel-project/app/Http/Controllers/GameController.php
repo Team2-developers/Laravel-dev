@@ -94,6 +94,10 @@ class GameController extends Controller
         // Get the user ids
         $userIds = [$game->user_id, $game->user_2, $game->user_3, $game->user_4];
 
+        if (in_array(null, $userIds)) {
+            return response()->json(['message' => 'User id cannot be null'], 400);
+        }
+        
         // Find users for each user id, and use null if user not found
         $users = collect($userIds)->map(function ($userId) {
             $user = null;
