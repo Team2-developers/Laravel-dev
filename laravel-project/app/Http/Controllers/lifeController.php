@@ -7,6 +7,7 @@ use App\Models\Life;
 use App\Models\Trout;
 use App\Models\User;
 use App\Models\Img;
+use App\Models\Comment;
 use Illuminate\Support\Facades\DB;
 
 
@@ -151,9 +152,29 @@ class lifeController extends Controller
             return response()->json(['message' => 'User or lifes not found for this user'], 404);
         }
 
+        $lifesWithComments = $lifes->map(function ($life) {
+            $lifeComments = Comment::where('life_id', $life->life_id)->orderBy('comment_id', 'desc')->limit(20)->get();
+            $comments = [];
+
+            foreach ($lifeComments as $comment) {
+                $commentUser = User::find($comment->user_id);
+                $commentInfo = [
+                    'user_id' => $commentUser->user_id,
+                    'user_name' => $commentUser->user_name,
+                    'user_email' => $commentUser->user_mail,
+                    'img_path' => $this->getImagePathFromImgId($commentUser->img_id),
+                    'comment' => $comment->comment
+                ];
+                array_push($comments, $commentInfo);
+            }
+
+            $life->comments = $comments;
+            return $life;
+        });
+
         return response()->json([
             'user' => $user,
-            'lifes' => $lifes
+            'lifes' => $lifesWithComments
         ]);
     }
 

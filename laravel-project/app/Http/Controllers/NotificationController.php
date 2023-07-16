@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Life;
 use App\Models\User;
 use App\Models\Comment;
+use App\Models\Img;
 use Illuminate\Support\Facades\Auth;
 
 class NotificationController extends Controller
@@ -31,7 +32,7 @@ class NotificationController extends Controller
                     'user_id' => $commentUser->user_id,
                     'user_name' => $commentUser->user_name,
                     'user_email' => $commentUser->user_mail,
-                    'img_id' => $commentUser->img_id,
+                    'img_path' => $this->getImagePathFromImgId($commentUser->img_id),
                     'message' => $commentUser->user_name . 'さんがコメントしました'
                 ];
                 array_push($comments, $commentInfo);
@@ -39,5 +40,17 @@ class NotificationController extends Controller
         }
 
         return response()->json(['notification' => $comments], 200);
+    }
+
+    private function getImagePathFromImgId($img_id)
+    {
+        $img_path = null;
+        if ($img_id) {
+            $img = Img::find($img_id);
+            if ($img) {
+                $img_path = asset('storage/' . $img->img_pass);
+            }
+        }
+        return $img_path;
     }
 }
