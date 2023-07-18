@@ -91,6 +91,12 @@ class lifeController extends Controller
 
             $life->save();
 
+            $user = User::where('user_id', $request->user_id)->first();
+            if ($user->life_id === null) {
+                $user->life_id = $life->life_id;
+                $user->save();
+            }
+
             foreach ($request->trouts as $troutData) {
                 $trout = new Trout($troutData + ['life_id' => $life->life_id]);
 
