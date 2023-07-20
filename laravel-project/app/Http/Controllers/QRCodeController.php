@@ -59,7 +59,7 @@ class QRCodeController extends Controller
     {
         $queryParams = http_build_query($qrData);
 
-        $svg = QrCode::format('svg')->size(300)->generate('http://localhost:8080/RoomJoin?' . $queryParams);
+        $svg = QrCode::format('svg')->size(200)->generate('http://localhost:8080/RoomJoin?' . $queryParams);
 
         // Remove XML Declaration
         $dom = new \DOMDocument;
